@@ -1,0 +1,268 @@
+\documentclass[11pt,a4paper]{article}
+
+% --- Packages ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\geometry{margin=2.5cm}
+
+% --- Theorem Environments ---
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% --- Custom Math Commands ---
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\T}{\mathcal{T}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\indicator}{\mathbf{1}}
+
+% --- Title ---
+\title{\textbf{Rigorous Formulation and Interval-Based Difference Array Computation of the Multi-Threshold Euler Characteristic}}
+\author{\textbf{A Unified Framework for Topology, Valuations, and Linear-Time Binarization}}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Computing the topological Euler characteristic across multiple binarization thresholds is a core requirement in digital image analysis, shape filtering, and segmentation. While static evaluation on a binary complex is strictly local, repeatedly evaluating the Euler characteristic for $G$ distinct threshold levels naively costs $\mathcal{O}(|A| \cdot G)$ operations. In this paper, we develop a comprehensive mathematical framework proving that: (1) the global Euler-Poincaré characteristic over cubical complexes decomposes into local valuations over dual Voronoi domains; (2) under grayscale thresholding $t$, the local quad functions $q_1(t), q_3(t), q_d(t)$ decompose into finite sums of interval indicator functions $\indicator_{[t_1, t_2]}(t)$; and (3) the global multi-threshold Euler characteristic curve $\chi(t)$ can be evaluated across all $G$ levels in optimal $\mathcal{O}(|A| + G)$ time using sparse discrete difference arrays.
+\end{abstract}
+
+\section{Topological Foundations on Cubical Complexes}
+
+Let $\R^N$ denote standard $N$-dimensional Euclidean space decomposed by the standard cubical complex $\T^N$.
+
+\begin{definition}[$k$-Cells of the Hypercubic Grid]
+For each coordinate tuple $\mathbf{x} = (x_1, \dots, x_N) \in \Z^N$ and binary vector $\mathbf{s} \in \{0, 1\}^N$ with $\sum_{i=1}^N s_i = k$, the open $k$-cell $\sigma_k(\mathbf{x}, \mathbf{s})$ is:
+\begin{equation}
+    \sigma_k(\mathbf{x}, \mathbf{s}) \coloneqq \prod_{i=1}^N I_i(x_i, s_i) \subset \R^N, \quad \text{where } I_i(x_i, s_i) \coloneqq \begin{cases} (x_i, x_i + 1) & \text{if } s_i = 1, \\ \{x_i\} & \text{if } s_i = 0. \end{cases}
+\end{equation}
+\end{definition}
+
+\begin{definition}[Foreground Complex and Euler Characteristic]
+Let $I : \mathcal{C}_N(\T^N) \to \{0, 1\}$ be a compactly supported binary image. The \emph{foreground complex} $K(I) \subseteq \T^N$ is the topological closure of active $N$-cells:
+\begin{equation}
+    K(I) \coloneqq \bigcup_{\substack{\sigma_N \in \mathcal{C}_N(\T^N) \\ I(\sigma_N) = 1}} \bar{\sigma}_N.
+\end{equation}
+The global Euler-Poincaré characteristic $\chi(K(I)) \in \Z$ is defined as:
+\begin{equation}
+\label{eq:euler_global}
+    \chi(K(I)) \coloneqq \sum_{k=0}^N (-1)^k n_k(K(I)),
+\end{equation}
+where $n_k(K(I)) \coloneqq |\mathcal{C}_k(K(I))|$ is the number of active open $k$-cells in $K(I)$.
+\end{definition}
+
+\begin{theorem}[Additive Valuation Property]
+The Euler characteristic $\chi : \mathcal{K}(\T^N) \to \Z$ is an additive valuation on the distributive lattice of finite subcomplexes $\mathcal{K}(\T^N)$:
+\begin{equation}
+    \chi(A \cup B) = \chi(A) + \chi(B) - \chi(A \cap B), \quad \forall A, B \in \mathcal{K}(\T^N).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Let $C_k(K)$ denote the $k$-th cellular chain group of complex $K$. The indicator functions over sets of open $k$-cells satisfy:
+\begin{equation}
+    \indicator_{\mathcal{C}_k(A \cup B)} = \indicator_{\mathcal{C}_k(A)} + \indicator_{\mathcal{C}_k(B)} - \indicator_{\mathcal{C}_k(A \cap B)}.
+\end{equation}
+Taking the sum over all $k$-cells for each dimension $k \in \{0, \dots, N\}$ and multiplying by $(-1)^k$ immediately yields the valuation identity.
+\end{proof}
+
+\section{The Dual Voronoi Partition and Local Valuation}
+
+\begin{definition}[Dual Voronoi Cell / Cell Group]
+For each primal vertex $\mathbf{v} \in \V(\T^N) = \Z^N$, its \emph{dual Voronoi cell} $C(\mathbf{v}) \subset \R^N$ is defined by:
+\begin{equation}
+    C(\mathbf{v}) \coloneqq \left\{ \mathbf{x} \in \R^N \;\middle|\; \|\mathbf{x} - \mathbf{v}\|_\infty \le \frac{1}{2} \right\} = \prod_{i=1}^N \left[ v_i - \frac{1}{2}, v_i + \frac{1}{2} \right].
+\end{equation}
+\end{definition}
+
+\begin{lemma}[Equipartition of $k$-Cells]
+\label{lem:equipartition}
+Each open $k$-cell $\sigma_k \in \mathcal{C}_k(\T^N)$ is geometrically bounded by $V_k = 2^k$ vertices and is partitioned into $V_k$ congruent subsectors across the dual cells $\{C(\mathbf{v}) \mid \mathbf{v} \in \V(\bar{\sigma}_k)\}$:
+\begin{equation}
+    \sum_{\mathbf{v} \in \Z^N} \indicator_{\{\sigma_k \cap \operatorname{int}(C(\mathbf{v})) \neq \emptyset\}} = V_k = 2^k.
+\end{equation}
+\end{lemma}
+
+\begin{theorem}[Local Valuation Theorem]
+The global Euler characteristic is exactly localized to vertex contributions:
+\begin{equation}
+    \chi(K(I)) = \sum_{\mathbf{v} \in \Z^N} \Delta \chi(Q(\mathbf{v})), \quad \Delta \chi(Q(\mathbf{v})) \coloneqq \sum_{k=0}^N (-1)^k \frac{1}{2^k} n_k^{\text{loc}}(Q(\mathbf{v})),
+\end{equation}
+where $Q(\mathbf{v}) \in \{0, 1\}^{2^N}$ is the local state of the $2^N$ voxels meeting at vertex $\mathbf{v}$, and $n_k^{\text{loc}}(Q(\mathbf{v}))$ is the number of active $k$-cells incident to $\mathbf{v}$.
+\end{theorem}
+
+\section{Grayscale Images and Indicator Interval Functions}
+
+\subsection{Grayscale Level-Set Binarization}
+
+Let $\mathcal{A}: \Z^2 \to \{0, 1, \dots, G-1\}$ denote a 2-dimensional discrete grayscale image with $G$ discrete intensity levels. 
+
+For any threshold parameter $t \in [0, G-1]$, the thresholded binary image $I_t: \Z^2 \to \{0, 1\}$ is defined pointwise:
+\begin{equation}
+    I_t(x, y) \coloneqq \begin{cases} 1 & \text{if } \mathcal{A}(x, y) > t, \\ 0 & \text{if } \mathcal{A}(x, y) \le t. \end{cases}
+\end{equation}
+Under the 8-connected ($W$-model) convention, the Euler characteristic of the foreground complex at threshold $t$ is given by Gray's formula:
+\begin{equation}
+\label{eq:euler_W_t}
+    \chi(t) = \frac{1}{4} \left( q_1(t) - q_3(t) - 2q_d(t) \right),
+\end{equation}
+where $q_1(t), q_3(t), q_d(t)$ are the global counts of bit quads of type $Q_1, Q_3,$ and $Q_D$ present in $I_t$.
+
+\subsection{Local Quad Transitions as Interval Indicators}
+
+Let $\mathbf{v} \in \Z^2$ be an internal grid vertex, and consider the four grayscale intensities of the $2 \times 2$ quad surrounding $\mathbf{v}$:
+\begin{equation}
+    \mathcal{Q}(\mathbf{v}) = \begin{bmatrix} g_{00} & g_{01} \\ g_{10} & g_{11} \end{bmatrix} \in \{0, \dots, G-1\}^{2 \times 2}.
+\end{equation}
+Let $(a, b, c, d)$ be the sorted permutation of these four scalar values such that:
+\begin{equation}
+    a \le b \le c \le d.
+\end{equation}
+
+\begin{theorem}[Indicator Interval Representation of Local Quads]
+\label{thm:quad_intervals}
+For a given quad $\mathcal{Q}(\mathbf{v})$ with sorted intensity values $a \le b \le c \le d$, its local contribution to the quad counters as a function of continuous threshold $t \ge 0$ is exactly expressed by indicator functions over integer intervals:
+\begin{align}
+    \indicator_{Q_1(\mathbf{v})}(t) &= \indicator_{[c, \, d-1]}(t) \quad \text{if } c < d, \label{eq:q1_interval} \\
+    \indicator_{Q_3(\mathbf{v})}(t) &= \indicator_{[a, \, b-1]}(t) \quad \text{if } a < b, \label{eq:q3_interval} \\
+    \indicator_{Q_D(\mathbf{v})}(t) &= \indicator_{[b, \, c-1]}(t) \quad \text{if } b < c \text{ and } \{c, d\} \text{ are diagonally positioned in } \mathcal{Q}(\mathbf{v}). \label{eq:qd_interval}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Recall that a pixel is active ($1$) if its intensity exceeds $t$. Thus:
+\begin{enumerate}
+    \item \textbf{Type $Q_1$ (Exactly one 1):} Exactly one pixel is $1$ if and only if the maximum intensity exceeds $t$ while the remaining three do not: $d > t$ and $c \le t$. For integer $t$, this is equivalent to $c \le t \le d-1$, which defines the interval $[c, d-1]$.
+    \item \textbf{Type $Q_3$ (Exactly three 1s):} Exactly three pixels are $1$ if and only if the top three values exceed $t$ while the minimum does not: $b > t$ and $a \le t$. This is equivalent to $a \le t \le b-1$, defining the interval $[a, b-1]$.
+    \item \textbf{Type $Q_D$ (Two diagonal 1s):} Exactly two pixels are $1$ if and only if $c > t$ and $b \le t$, yielding $t \in [b, c-1]$. This quad constitutes a diagonal configuration $Q_D$ if and only if the two maximal elements $\{c, d\}$ occupy diagonally opposite positions in the $2 \times 2$ window. \qedhere
+\end{enumerate}
+\end{proof}
+
+\begin{corollary}[Global Quad Sums]
+The global counts $q_1(t), q_3(t), q_d(t)$ are sums of local indicator functions over all vertices $\mathbf{v}$:
+\begin{equation}
+    q_1(t) = \sum_{\mathbf{v}} \indicator_{Q_1(\mathbf{v})}(t), \quad q_3(t) = \sum_{\mathbf{v}} \indicator_{Q_3(\mathbf{v})}(t), \quad q_d(t) = \sum_{\mathbf{v}} \indicator_{Q_D(\mathbf{v})}(t).
+\end{equation}
+\end{corollary}
+
+\section{Optimal Multi-Threshold Evaluation via Difference Arrays}
+
+\subsection{The Difference Operator Representation}
+
+Evaluating $\chi(t)$ point-by-point across $G$ threshold values naively requires updating arrays along interval spans, resulting in $\mathcal{O}(|A| \cdot G)$ complexity. By leveraging the algebraic structure of interval indicator functions, we transform interval updates into sparse point impulses.
+
+\begin{definition}[Discrete Difference Operator]
+For any discrete sequence $f: \{0, \dots, G-1\} \to \Z$, its forward difference sequence $\Delta f$ is defined by:
+\begin{equation}
+    \Delta f[t] \coloneqq f[t] - f[t-1] \quad (\text{with } f[-1] \coloneqq 0), \quad \text{so that } f[t] = \sum_{k=0}^t \Delta f[k].
+\end{equation}
+\end{definition}
+
+\begin{proposition}[Sparse Boundary Impulses]
+The indicator function of an integer interval $[t_1, t_2]$ has a discrete difference sequence consisting of exactly two non-zero impulses:
+\begin{equation}
+    \Delta \indicator_{[t_1, t_2]}[t] = \delta[t - t_1] - \delta[t - (t_2 + 1)],
+\end{equation}
+where $\delta[k]$ is the discrete Kronecker delta impulse ($\delta[0] = 1$ and $\delta[k \neq 0] = 0$).
+\end{proposition}
+
+\begin{theorem}[Linear-Time Global Euler Difference Accumulator]
+Let $\Delta \chi_{\text{diff}}: \{0, \dots, G\} \to \Z$ be a discrete difference array initialized to zero. For every vertex $\mathbf{v} \in \Z^2$ with sorted intensities $a \le b \le c \le d$:
+\begin{enumerate}
+    \item If $c < d$: add $+1$ at index $c$, and add $-1$ at index $d$.
+    \item If $a < b$: add $-1$ at index $a$, and add $+1$ at index $b$.
+    \item If $b < c$ and $\{c, d\}$ are diagonal: add $-2$ at index $b$, and add $+2$ at index $c$.
+\end{enumerate}
+Then, for all thresholds $t \in \{0, \dots, G-1\}$, the exact global Euler characteristic is obtained via a single prefix sum:
+\begin{equation}
+    \chi(t) = \frac{1}{4} \sum_{k=0}^t \Delta \chi_{\text{diff}}[k].
+\end{equation}
+The entire curve $\{\chi(t)\}_{t=0}^{G-1}$ is computed in strictly $\mathcal{O}(|A| + G)$ time.
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{thm:quad_intervals} and linearity of the forward difference operator:
+\begin{align*}
+    4 \Delta \chi[t] &= \Delta q_1[t] - \Delta q_3[t] - 2 \Delta q_d[t] \\
+    &= \sum_{\mathbf{v}} \left( \Delta \indicator_{Q_1(\mathbf{v})}[t] - \Delta \indicator_{Q_3(\mathbf{v})}[t] - 2 \Delta \indicator_{Q_D(\mathbf{v})}[t] \right).
+\end{align*}
+Substituting the two-point impulse representation of each interval:
+\begin{align*}
+    \Delta \indicator_{Q_1(\mathbf{v})}[t] &= \delta[t - c] - \delta[t - d], \\
+    -\Delta \indicator_{Q_3(\mathbf{v})}[t] &= -\delta[t - a] + \delta[t - b], \\
+    -2\Delta \indicator_{Q_D(\mathbf{v})}[t] &= -2\delta[t - b] + 2\delta[t - c].
+\end{align*}
+Accumulating these localized impulse weights into $\Delta \chi_{\text{diff}}$ over a single raster pass requires $\mathcal{O}(|A|)$ operations. The prefix sum integration runs in $\mathcal{O}(G)$ time. Thus, the total computational complexity is $\mathcal{O}(|A| + G)$.
+\end{proof}
+
+\section{The Unified Fast Multi-Threshold Algorithm}
+
+Algorithm~\ref{alg:fast_euler_diff} presents the complete, single-pass algorithm computing the complete multi-threshold Euler characteristic spectrum.
+
+\begin{algorithm}[H]
+\caption{Linear-Time Multi-Threshold Euler Characteristic Curve}\label{alg:fast_euler_diff}
+\begin{algorithmic}[1]
+\Require Grayscale image matrix $\mathcal{A}$ of size $H \times W$, number of gray levels $G$
+\Ensure Array of Euler characteristics $\chi[0 \dots G-1]$
+\State Allocate difference array $D[0 \dots G] \gets 0$
+\State Allocate result array $\chi[0 \dots G-1] \gets 0$
+\State $\mathcal{A}_{\text{pad}} \gets \text{ZeroPad}(\mathcal{A}, \text{pad\_width}=1)$
+\For{$y \gets 0$ \textbf{to} $H$}
+    \For{$x \gets 0$ \textbf{to} $W$}
+        \State Extract 4 neighbor pixels: $p_0 \gets \mathcal{A}_{\text{pad}}[y, x], \; p_1 \gets \mathcal{A}_{\text{pad}}[y, x+1]$
+        \State \phantom{Extract 4 neighbor pixels:} $p_2 \gets \mathcal{A}_{\text{pad}}[y+1, x], \; p_3 \gets \mathcal{A}_{\text{pad}}[y+1, x+1]$
+        \State Let $(a, b, c, d)$ be the sorted values of $\{p_0, p_1, p_2, p_3\}$
+        \If{$c < d$} \Comment{Contribution of $Q_1$}
+            \State $D[c] \gets D[c] + 1$
+            \State $D[d] \gets D[d] - 1$
+        \EndIf
+        \If{$a < b$} \Comment{Contribution of $Q_3$}
+            \State $D[a] \gets D[a] - 1$
+            \State $D[b] \gets D[b] + 1$
+        \EndIf
+        \If{$b < c$} \Comment{Contribution of $Q_D$}
+            \If{$(p_0, p_3 \in \{c, d\})$ \textbf{or} $(p_1, p_2 \in \{c, d\})$}
+                \State $D[b] \gets D[b] - 2$
+                \State $D[c] \gets D[c] + 2$
+            \EndIf
+        \EndIf
+    \EndFor
+\EndFor
+\State $\text{running\_sum} \gets 0$
+\For{$t \gets 0$ \textbf{to} $G-1$} \Comment{Integrate prefix sum}
+    \State $\text{running\_sum} \gets \text{running\_sum} + D[t]$
+    \State $\chi[t] \gets \text{running\_sum} / 4.0$
+\EndFor
+\State \Return $\chi$
+\end{algorithmic}
+\end{algorithm}
+
+\section{Conclusion}
+
+We have established a rigorous, unified theory connecting abstract cellular valuations to practical real-time multi-threshold image analysis. By exploiting the equipartition of cubical cells over dual Voronoi domains and the piece-wise constant nature of threshold level-sets, local topological counts reduce to interval indicator functions. The forward difference operator maps these intervals to sparse discrete impulses, enabling the computation of the complete Euler characteristic spectrum $\chi(t)$ across all $G$ gray levels in optimal $\mathcal{O}(|A| + G)$ time and $\mathcal{O}(G)$ auxiliary space.
+
+\end{document}

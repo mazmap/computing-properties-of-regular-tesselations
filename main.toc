@@ -1,0 +1,43 @@
+\contentsline {section}{\numberline {1}Introduction and the Local Computability Problem}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}The Global vs. Local Dilemma in Digital Topology}{3}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Minsky and Papert's Non-Locality Theorem for Connectedness}{3}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Gray's Discovery: Local Countability of the Euler Characteristic}{3}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}The Dual Cell-Group Principle}{4}{subsection.1.4}%
+\contentsline {section}{\numberline {2}Continuous Foundations: Jordan Topology, Triangulations, and Morse Sweeps}{4}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Continuous Binary Images, Border Sets, and Jordan Parity}{4}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Continuous Simplicial Triangulations and the Euler--Poincaré Theorem}{5}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}The Additive Valuation Property and Image Combinations}{6}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Continuous Morse--Bott Critical Point Sweeps}{7}{subsection.2.4}%
+\contentsline {section}{\numberline {3}Planar Regular Tessellations and the Geometry of Cell Groups}{8}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Schläfli Classification of Euclidean Regular Tilings}{8}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Formal Definition of Dual Cell Groups}{8}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Linear Separability of Cell Groups and Connectivity Ambiguities}{8}{subsection.3.3}%
+\contentsline {section}{\numberline {4}2D Local Valuation Theory and Combinatorial Proofs}{9}{section.4}%
+\contentsline {subsection}{\numberline {4.1}The 2D Dual Decomposition Valuation Framework}{9}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}The Hexagonal Lattice $(6, 3)$}{11}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}The Square Lattice $(4, 4)$}{12}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}The Triangular Lattice $(3, 6)$}{13}{subsection.4.4}%
+\contentsline {section}{\numberline {5}Local Euler Differentials and Parallel Thinning Algorithms}{13}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Definition and Locality of the Euler Differential}{13}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Hexagonal Euler Differential Formula}{13}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Square Lattice Euler Differentials}{14}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Topological Neighborhood Taxonomy and Simple Points}{14}{subsection.5.4}%
+\contentsline {subsection}{\numberline {5.5}Subfield Decomposition and Parallel Skeletonization}{14}{subsection.5.5}%
+\contentsline {section}{\numberline {6}$N$-Dimensional Dual Voronoi Valuation Framework}{15}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Geometric and Topological Setup}{15}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}The Dual Voronoi Partition}{15}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}The Universal $N$-Dimensional Local Valuation Theorem}{16}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Dimensional Scaling on Hypercubic Lattices $\mathbb {Z}^N$}{17}{subsection.6.4}%
+\contentsline {section}{\numberline {7}Specialization to 3-Dimensional Volume Processing on $\mathbb {Z}^3$}{17}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Combinatorial Parameters and Denominator Clearing}{17}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Complete Classification of the 22 Octocube Equivalence Classes}{18}{subsection.7.2}%
+\contentsline {section}{\numberline {8}Concrete Algorithms for Local Euler Characteristic Computation}{19}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Algorithm 1: 2D Directional Morse Sweep}{19}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Algorithm 2: 2D Isotropic Bit-Quad Valuation ($W, Z, H$)}{19}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Algorithm 3: Topology-Preserving Parallel Thinning (Subfield Decomposition)}{20}{subsection.8.3}%
+\contentsline {subsection}{\numberline {8.4}Algorithm 4: 3D Isotropic Volume Valuation on $\mathbb {Z}^3$}{20}{subsection.8.4}%
+\contentsline {section}{\numberline {9}Theory of Local Computability and Complexity Analysis}{21}{section.9}%
+\contentsline {subsection}{\numberline {9.1}The Local Property Counter (LPC) Formalism}{21}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Fundamental Local Computability Theorems}{21}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.3}Master Classification Table Across Dimensions}{21}{subsection.9.3}%
+\contentsline {section}{\numberline {10}Conclusion}{22}{section.10}%

@@ -1,0 +1,1593 @@
+551
+
+IEEE TRANSACTIONS ON COMPUTERS, VOL. C-20, NO. 5, MAY 1971
+
+Local Properties of Binary Images
+in Two Dimensions
+STEPHEN B. GRAY
+
+Abstract-Aspects of topology and geometry are used in analyzing
+continuous and discrete binary images in two dimensions. Several
+numerical properties of these images are derived which are "locally
+countable." These include the metric properties area and perimeter,
+and the topological invariant, Euler number. "Differentials" are defined for these properties, and algorithms are given. The Euler differential enables precise examination of connectivity relations on the
+square and hexagonal lattices. Easily computable binary image characterizations are introduced, with reference to a serial binary image
+processor (BIP) now being built. A precise definition of "localness"
+is given, and some implications for image computation theory are
+examined.
+Index Terms-Binary images, connectivity, Euler number, hexagonal lattice, local properties, neighborhood analysis, perceptron, serial
+processors, square lattice, theory of computation, topology.
+
+I. INTRODUCTION
+
+T HIS paper describes certain properties of binary
+images in two dimensions, both in the continuous
+plane and on the hexagonal and square lattices.'
+These numerical properties are locally countable; that is, a
+given image property is a sum of numbers, where each
+number is derived from data contained in a small piece or
+"cell" of the image. (Cells are simply connected, completely
+cover the image, are smaller than significant image details,
+are all measured by the same process, and are independent
+of each other for measurement purposes.)
+Of particular interest is the fact that the topological
+property "Euler number" of a region of space is locally
+countable (Fig. 1). Euler number in two-space is simply the
+number of distinct objects, including points, lines, and
+blobs, minus the number of holes inside objects. In one dimension, this definition reduces to the number of distinct
+segments along a line.
+Euler number is useful in image processing both because
+the topological counts in a given image are of intrinsic interest in characterizing and recognizing the image, and because Euler number is a key concept in examining connectivity relations of individual bits on lattices. This is discussed
+at length below.
+In addition to Euler number, certain metric properties
+are locally computable, such as perimeter length and area.
+Useful image characterizations can be obtained by formulas
+involving these measurements.
+The concept of summing local measurements is, of course,
+closely related to the perceptron idea. Local measurements
+Manuscript received June 12, 1970; revised October 10, 1970.
+The author is with Information International, Inc., Los Angeles,
+
+Calif. 90064.
+1 "Two dimensions" is emphasized because all the concepts and methods in this paper extend readily to three-dimensional images. This extension will be covered in a subsequent paper.
+
+\- LINE
+E= 3 (4 OBJECTS, HOLE)
+(TWO DIMENSIONS)
+SEGMENTS
+
+E=4 (4 SEGMENTS)
+
+(ONE DIMENSION)
+
+Fig. 1. Euler number in one and two dimensions.
+
+of an image can be carried out by first-level elements, each of
+which is limited in "diameter," or the distance spread of its
+inputs, and in "order," which is the number of its inputs
+[1, p. 12]. The elements' binary outputs are weighted and
+summed. (Perceptrons include a threshold or decision step.
+We omit this, talking only of numerical image measurement. Hence our use of "order" and "diameter" characterizes a measurement, and not a predicate as in perceptron
+literature.)
+This study of local measurements was prompted by a
+special computer, the binary image processor (BIP). The
+BIP examines small neighborhoods, one at a time, in twodimensional binary images. For each neighborhood, several Boolean predicates are computed in parallel, based on
+various majority-type functions of bit cells and their immediate neighborhoods. Some of these predicates are
+counted, resulting in local property measurements; others
+can be used to derive new images, giving powerful image
+transformation capabilities.
+II. CONTINuous BINARY IMAGES2
+
+A. Definitions
+A border curve on the plane is defined to be a simple
+bounded, closed curve. A border set is a finite set of border
+curves, none of which touch or intersect any others. A binary
+region is a finite, simply connected area on the plane, not
+crossed by any border curves, having assigned to it the
+image value 1 or 0. The exterior of the plane is that portion
+2
+The material in this section is not new to topologists, but is presented
+here because it is difficult or impossible to find references which present all
+the required material in an elementary manner.
+
+Authorized licensed use limited to: Technische Universitaet Muenchen. Downloaded on October 19,2025 at 12:03:15 UTC from IEEE Xplore. Restrictions apply.
+
+55s2
+away from and enclosing the region containing the border
+set. The exterior is a connected region because there is a
+finite number of bounded border curves. All of the exterior
+is assigned the image value 0.
+The parity P of a point not on a curve, with respect to a
+given border set, is defined to be even or odd depending on
+whether a simple path from the point to the exterior, not
+tangent to any border curve, crosses an even or odd number
+of lines. It is not hard to show that P is independent of the
+path chosen.
+Then a binary image is a plane containing a border set,
+and having an image value of 0 in every binary region whose
+points have even parity, and 1 everywhere whose points
+have odd parity. The parity and therefore the image value
+of two points separated by a single boundary curve are different, so a border curve always has image value 0 on one
+side and image value 1 on the other side. An object border is
+a border curve having image value 1 on the interior side of
+the curve. An object is the entire interior of an object border.
+A hole border is a border curve having image value 0 on the
+interior side of the curve. A hole is the entire interior of a
+
+hole border. (See Fig. 2.)
+These definitions include only two-dimensional image objects and holes, because lower dimensional elements cannot
+occur on lattices, which is our main goal below; however
+they can be validly included in nonlattice discussions.
+B. Image Triangulation
+Suppose that in a given binary image we draw lines
+through the l's areas, each ending at a border or at another
+line, such that all l's regions thus created have three sides.
+See Fig. 3, which shows two different triangulations of a
+one-object image. Let no, nl, and n2, respectively, be the
+total number of vertices, line segments, and l's regions in
+the image. Then the Euler number E of the image is defined
+
+IEEE TRANSACTIONS ON COMPUTERS, MAY 1971
+
+Fig. 2. Borders, objects, holes in two dimensions.
+
+no =6
+
+n1 =10
+n2=5
+
+n0=7
+
+n, =14
+
+n2=8
+
+Fig. 3. Two triangulations of one object.
+
+separately determined by local property measurements [1,
+p. 134].
+"Triangulation" need not be into areas with three sides
+any number greater than zero is valid as long as all areas and
+border line segments are simply connected. A line may have
+both ends terminating at the same point. For images containing lower dimensional objects, triangulation may include points and lines as objects, as well as areas.
+C. Image Combining
+We wish to show that Euler number (E) is an "additive
+as
+set property"-that is, given two images I, and 12 and their
+(1) Euler numbers E(I1) and E(I2), the Euler numbers of the
+E = no-n1 + n2
+It is well known in topology [2] that this quantity is inde- union and intersection images are constrained by
+pendent of the triangulation chosen. In Fig. 3, the image has
+E(I1) + E(12) = E(I1 r I2) + E(I1 U I2).
+(3)
+E =1 in both cases. Any simply connected object has E= 1.
+Clearly if the image consists of B simply connected ob- Similarly, we show that for l's area A,
+jects, no- n1 + n2 counted over the entire image would be
+A(I1) + A(I2) = A(I1 (T 12) + A(I1 u I2)
+(4)
+just B. Next, suppose that a hole is introduced into the
+image, for example, by drawing a line through the 0's area and for border length (perimeter) P,
+between two existing vertices on a border. This change
+P(I1) + P(I2) = P(I1 n I2) + P(I1 U I2).
+(5)
+gives AE =0-1+0=-1. Clearly AE=-1 will hold for
+any distinct hole added to the image. Then if the complete
+First, for (3) suppose we generate a triangulation which
+image consists of B objects and L holes (distributed arbi- is valid for 1,, I2, I1n12, and 11u12, in the sense of Fig. 4.
+trarily among the objects), we will have
+That is, a set of points {a, ...*, g} and lines is chosen such
+=
+E B-L=nO-n1 + n2(2) that this set or a subset of it properly triangulates all four
+images. First, considering the points, some will belong to
+Triangulation implies that Euler number is locally count- both I, and I2 (b, c, f, g). These will belong to both I, 1I2
+able because all we need to do is subdivide the image into and UI2. Others will belong to I, or 12 but not both (a, d, e).
+sufficiently small cells, and count no, n1, and n2 in each cell, TheseIl will belong to I1U12 but not
+I1nI2. It should then be
+summing at the end. This may be counterintuitive since the clear that
+image can have arbitrarily large and intertwined objects
+and holes. (It has been proven that neither B nor L can be
+n0(I) + n0(12) = n0(Il ' 12) + no(I U '2)Authorized licensed use limited to: Technische Universitaet Muenchen. Downloaded on October 19,2025 at 12:03:15 UTC from IEEE Xplore. Restrictions apply.
+
+553
+
+GRAY: LOCAL PROPERTIES OF BINARY IMAGES
+
+Io II
+
+a
+
+c
+
+b
+
+e-
+
+12
+I2
+
+1
+
+14 I5 16
+
+17
+
+x8,
+xe
+
+d
+
+9
+
+II
+
+I2
+
+Fig. 5. Critical points in two dimensions.
+
+E=0. The combined image has B= 1, being all joined together. Each term in the first sum in (7) is 0. Each term in the
+double sum is 2, and there are N(N - 1)/2 terms. All further
+f
+9
+sums are 0. Hence 1- L(N) =-2N(N -1)/2, so L(N) = N2
+-N+ 1.
+IIni2
+II UI2
+3) Consider a base image I to which we join two other
+Fig. 4. Triangulation of images and combinations.
+images, A and B. Each image added separately produces,
+respectively, AEA and AEB. Under what conditions do the
+(In Fig. 4, this equality represents 5+6 = 7 + 4.) A similar separate changes sum to give the change produced by joinargument will demonstrate the above for n1. The equality ing AuB? A simple derivation based on (6) gives
+for the figure is 8 + 9 = 12+5; similarly for n2, for which
+AEAuB-AEA-AEB= E(I n A n B)-E(A r B) (8)
+the example gives 4+4=6+2. From these equalities and
+(2), (3) immediately follows.
+which yields the following lemma.
+In the argument for n2, the totality of actual subareas is
+Lemma: If A and B are disjoint images, the two joined
+identical for the two sets of images, as well as their number. simultaneously to an image I produces
+the same AE as if
+From this, (4) follows. Next, note that any part of the A and B are joined one after another.
+perimeter of I, "outside" I2 will be perimeter in I U I2,
+If E(Ir-AnB)#E(Ar-B), the union of A and B onto I is
+but not in I,n I2. This and similar reasoning establishes (5). "nonlinear."
+Note that the union can be linear even if
+(For (5) to hold for two objects lying on opposite sides of AnBrB0.
+a common border, in which case Il nI2 contains lines which
+are not borders of objects, the perimeter of such a line is D. Critical Point Approach
+considered to be twice its length.)
+Suppose an image I is split into a sequence of subimages
+We now examine several consequences of the additive set
+I2,.* , IN by a series of nonintersecting lines, so that
+I1,
+property which will be useful later on.
+subimage
+Ii touches only Ii- 1 and Ii+ 1. For simplicity, let
+1) Suppose we have an initial image I, to which we add
+the
+lines be more or less parallel, as in Fig. 5, and
+dividing
+(in the sense of union) an additional piece AI. Each of the
+let
+0
+be
+a
+"vector"
+pointing downstream, that is, in the
+additive set properties, for example E, undergoes a change
+direction of increasing index (i).
+AE when AI is added. From (3) we have
+Consider a subimage, such as Ii or I2, which contains one
+AE - E(I u AI) - E(I) = E(AI)- E(I n AI)
+(6) upstream-facing convexity (denoted X0) but no upstreamfacing concavities (such as Vo in 13). Now a convexity conthat is, the change in E is equal to E of the added piece stitutes one object in its subimage Ii; but since the conminus E of the intersection. Similarly for P or A.
+vexity, by definition of the subimages, does not touch the
+2) From (3), using the associative and distributive laws border between Ii and Ii_1, the one-dimensional image
+for sets, we can prove (by induction on N) a law for combin- IinIi- does not have a corresponding object. Assuming
+ing N images:
+that all other objects in Ii extend back to the line IinIi- 1,
+it
+is then true that
+N
+N
+N
+e
+
+b
+
+c
+
+E(IlU I2 U *.. U IN) = i=l E(Ik)- i=1
+E E(Ii n I)
+E j=i+l
+N
+
+N
+
+N
+
+E(Ii r Ij r Ik)-, +,-, etc.,
+to the last term, + (-1) N- 'E(Il n I2 r) ...r* IN)- (7)
++ E
+
+E
+
+E
+
+i=1 j=i+1 k=j+1
+
+E(Ii) -E(Ii r) Ii - 1) = 1.
+Now consider a subimage Ii containing one Vo and no
+Xo's. The V0 is associated with one object in Ii; this object
+touches IirIi- 1 in two places. Therefore,
+
+E(Ii) -E(Ii n Ii- 1) = 1.
+Example: Suppose a binary image consists of N overlapping rings, such that each ring meets every other ring in Note that the image also contains points X0 and V-0,
+two places, with no three rings meeting in a point. How which are not being counted, because for such a point,
+many holes does the image contain? We use (7), considering
+each ring to be one object with one hole, therefore having
+E(Ii) = E(Ii n) Ii- 1).
+Authorized licensed use limited to: Technische Universitaet Muenchen. Downloaded on October 19,2025 at 12:03:15 UTC from IEEE Xplore. Restrictions apply.
+
+55s4
+
+IEEE TRANSACTIONS ON COMPUTERS, MAY 1971
+
+If we now let n(X0) and n(V0) denote the number of left- for evaluating a binary image of a printed character. The
+facing convexities and concavities, respectively, in the image, average line width w should be 0.1 to 0.2 of the character
+width for clean typing [5]. Also, k/w should be at least 10
+we will have
+for high-quality print. E itself should ideally be between
+N
+N
+(9) - 1 (for 8 or B) and + 2 (for i or j). (E is very noise sensitive,
+EE(Ii r- Ii- 1) = n(X,) -n(Vf,).
+EE(IJ - ~~~i=l1
+i=l
+so must be used with caution.) If these tests fail, an improved
+should be obtained, rather than entering a lengthy
+image
+Now refer to (7). All terms on its right for the present case
+process.
+recognition
+are zero except the first sum and the members of the second
+sum involving intersections of adjacent subimages. The
+III. CELLULAR BINARY IMAGES
+double sum in (7) thus reduces to the second sum in (9).
+A regular tessellation of the plane, denoted (p, q), consists
+Hence we have
+of (q) regular p-gons coming together at a point, with every
+(10) p-gon having p such points. Thus the p-gons and points
+E(I) = B - L = n(X0) -n(Vo).
+This equation yields extremely simple formulas for Euler cover the plane. It is easily proven [6] that the only three
+number on various lattices. In the above treatment, Xo and such lattices are (6, 3), (4, 4), and (3, 6), shown in Fig. 6. We
+Vo do not denote,specific points on the object (or hole) consider the p-gon to be a "bit cell" of a cellularized image.
+borders, but rather small regions, whose location is relative If the centers of adjacent bit cells are connected with lines,
+to the chosen family of separating lines. The term "critical we get q-gons, called "cell groups."
+Having these definitions, we can be precise about what a
+point" is taken from topology.3
+fine image cellularization is. Assume that any
+sufficiently
+An interesting fact about Euler number, triangulation,
+image is a quantization of an original binary
+cellular
+binary
+and critical points is that the overall approach extends
+border curves. Let us first assume that
+smooth
+image
+having
+in
+readily to three dimensions [4], which will be covered a
+of all border curves is everywhere
+the
+radius
+of
+curvature
+subsequent paper.
+greater than the diameter of a bit cell, or equivalently, than
+E. Image Characterization; Applications
+of a celi group. Suppose the binary decision for a given bit
+Certain formulas involving the basic local properties E, cell is based on whether the cell is of value 1 over more or
+P, and A provide useful geometric characterizations of less than 50 percent of its area. This is approximately
+binary images. In the following analysis let us assume that equivalent, for low-curvature borders, to whether the
+the image contains very few holes compared to the number border curve includes the bit cell center point in the 0 region
+of objects, so that E B. First, average area A and perimeter or in the 1 region.
+Since bit cell centers define the cell group, we investigate
+P per object are given by
+how border curves can penetrate these polygons. One way
+A = AIE
+to define a sufficiently fine cellularization is: the bit cell
+(11)
+P= P/E
+dimension must be smaller than the smallest significant diswhich would be useful in distinguishing speck-type images tance in the image. This implies that no bit cell or cell group
+polygon contains more than one entry or exit of a border
+from blobby or lumpy ones.
+curve.
+Further measures are available for images known to
+Definition: A cell group polygon in a particular image is
+consist of long thin line-type objects. Such images include
+if and only if a straight line can be drawn through
+separable
+printing, writing, line drawing, and certain micrographs of
+which
+has
+it
+all the l's on one side and all the 0's on the
+fibrous structures. Line length k, average line width w, and
+A
+image is a cellularized image having
+other
+side.
+separable
+the average length/width ratio k/w are given by
+no inseparable cell groups. Then a sufficiently resolved
+k = P/2
+(12) cellularization is one which generates a separable image
+w = A/k = 2A/P
+(13) from the original. For the (6, 3) cell group, clearly any possican result from one border entering and exitble cell
+(14) ing the group
+k/w = P2/4A.
+triangle. Therefore, for the (6, 3) hexagonal lattice,
+On the other hand, if the image consists of a circular ob- all cell groups are separable, hence the well-known fact [7 ],
+ject of radius r, P = 27cr and A =7rr2, so P2/4A = The [8] that the hexagonal lattice has no diagonal connection
+constant is the minimum value for P2/4A, attained for any complication.
+image consisting of one or more circular disks. Therefore,
+For the square lattice, there are six distinct types of cell
+P2/4A is a measure of the average elongation of objects in groups, of which [" ] is obviously inseparable. Alternaan arbitrary image. (The quantity P2/A has been used by tively, two of the 16 total types are inseparable. For the
+psychologists to define the apparent "dispersion" of a (3, 6) lattice of triangles, there are 13 distinct types and 64
+picture [11 ];)
+total types of cell groups. Six distinct types and 32 total
+These measures, which are very simple to compute, are types are inseparable. Clearly, the inseparability fraction
+extremely useful in practice. A particularly good example is rises with q in (p, q).
+The "neighborhood" U of a bit cell U is the set of all bit
+cells whose state must be known to determine what effect
+3 See Bott [3] for a technical presentation of critical point theory.
+2.
+
+Authorized licensed use limited to: Technische Universitaet Muenchen. Downloaded on October 19,2025 at 12:03:15 UTC from IEEE Xplore. Restrictions apply.
+
+555
+
+GRAY: LOCAL PROPERTIES OF BINARY IMAGES
+
+BIT CELLS
+
+(@ 0S
+l~~~~~
+(a)
+
+(b)
+
+(c)
+
+Fig. 7. X0 and Vo on hexagons. (a) Choice of 0. (b) X0. (c) V,.
+(6,3)
+
+(4,4*)
+
+(3,6)
+
+Fig. 6. Regular plane tessellations or lattices.
+
+changing the value of U has on the Euler number. As will be
+seen, for the hex lattice, U consists of the six adjacent hexagons; for the square lattice, U is the four edge-adjacent and
+four vertex-adjacent squares. For the (3, 6) lattice, U is the
+three edge-adjacent and nine vertex-adjacent triangles.
+Clearly the complexity of a given lattice is directly related
+to the complexity of its cell group polygon. Because of this,
+and because it has fewer equivalent radial directions (3)
+than the others, the (3, 6) lattice does not seem to have any
+advantages for image processing, and is not discussed in detail.
+IV. THE HEXAGONAL LATTICE
+The (6, 3) tessellation is examined first, because its
+neighborhood connectivity properties are much simpler
+than those of (4, 4).
+A. Euler Number Algorithm
+An explicit formula for E on the hexagonal lattice is
+most easily derived using (10). The proper method of subdividing the image is to choose the stream direction 0
+parallel to a side of the bit cell hexagons. See Fig. 7. Clearly
+there is only one pattern of three bits which can constitute
+an Xo, and one other which can make a V0. With this choice
+of 0, we can write
+
+it. This argument gives, for any image having a zero exterior,
+n[01] = n[10]
+
+n<11= n<10
+n[] =nL 1.
+
+(18)
+
+Now clearly the perimeter length, in terms of hexagon side
+lengths, is equal to the number of unit edges of all orientations. The six orientations can be combined by (18) into
+three sets, so
+P =
+
+2n[01] + 2n[
+
++ 2n[1
+
+(19)
+
+Since by (18) each term has an equivalent, there are eight
+ways to write (19).
+P can also be found by summing over cell group triangles.
+Any T1 or T2 contains one unit of perimeter length, so
+P= T1 + T2(20)
+Equation (20) will always be an overestimate for originally
+smooth straight perimeters. An approximate perimeter P.,
+having zero error averaged over all perimeter angles, is
+given by
+Pa= (Tl + T2)/1-24-
+
+(21)
+
+C. Euler Differential; Neighborhood Processing
+Consider a given hexagonal bit cell U in an arbitrary
+image. If this cell is 0, the image Euler number is denoted
+setting this cell to 1 gives a different Euler number, E1.
+(15) Eo;
+n(V0) = n
+Note that if AE1 = E1 - Eo is the change in E due to setting
+U to 1, then AEO=Eo-E1= -AE1 would be the change
+Then from (10) we immediately have
+if U is reset. Denoting the bit cell change as AU (=1 for
+<n 101
+(16) setting, -1 for resetting), and the resulting Euler number
+E = n10
+change as AE, clearly the ratio AE/AU is the same whether
+AU= +1 or -1. We then define
+Euler differential
+Since there are six equivalent choices of 0, there are six E*(U) of a particular neighborhood Uthe
+as
+equivalent forms of (16), which yield exactly the same value
+E*(U) = AE/AU.
+for E if the image has a zero exterior. A direction-symmetri(22)
+cal form of (16) can be derived by defining T1 as the number Since Euler number is locally countable, clearly the sums
+of cell group triangles in the image having one 1 and two O's, needed to find
+and E1 will differ only over the six cell
+in any of the six orientations, and similarly for T2. By adding group triangles Eo
+which contain the changing bit U. Therethe six versions of (16) we get
+fore E*(U) must be a function of the immediate six-bit
+E = (T1 - T2)/6.
+(17) neighborhood of U, denoted U =U, , U5}, where the
+Ui are numbered sequentially clockwise (and subscripts
+B. Perimeter Length
+are treated modulo 6).
+To find E*, we calculate the changes in no, n1, and n2 over
+To obtain a simple formula for perimeter length P, consider a straight horizontal line bisecting vertical hexagon the six-bit cell neighborhood resulting from setting U from
+sides. Any such line entering a succession of l's must leave 0 to 1, and use AE=Ano-Anl+An2. To do so, we adopt
+
+n(Xo) = n
+
+0]
+
+[0]
+
+Authorized licensed use limited to: Technische Universitaet Muenchen. Downloaded on October 19,2025 at 12:03:15 UTC from IEEE Xplore. Restrictions apply.
+
+556
+
+IEEE TRANSACTIONS ON COMPUTERS, MAY 1971
+
+an image "triangulation" convention where every "1" bit
+cell has or shares six edges contributing to n1, and six
+vertices contributing to no, regardless of how many other
+"1" cells the given cell touches. (That is, the interior of all
+IU'I-I
+IU'1=2
+IU1=3
+E0
+E4 =-I
+E*=-2
+objects is completely "hexagonalized.") First, setting U
+(a)
+(c)
+(b)
+from 0 to 1 always causes An2 = + 1. Secondly, with the
+convention, An, will be + 1 for every "0" bit cell adjacent to
+U. Last, Ano will be + 1 for every pair of consecutive zeros
+in U. Therefore the following lemma holds.
+Lemma: E*(U) is equal to the number of 0, 0 adjacent
+IU'1=0
+IU1=0
+Et +1
+E*-+l
+cell pairs in U, minus the number of 0 cells in U, plus one.
+Now since each 0 cell must have a 1 or a 0 as its clock(d)
+(e)
+wise neighbor, we can write n(0) = n(0, 1) + n(0, 0). Then
+Fig. 8. Examples of Euler differential.
+E*= n(O, 0)- n(0) +1=1- n(0, 1). For purpose of BIP design, we wish to express E * in terms of the population or a line segment in an image has a perimeter oftwice its length,
+l's count of a (possibly transformed) neighborhood of U. and a unit line segment results in the intersection wherever
+If we define a new neighborhood U' in terms of
+the neighborhood was 1. Since P(AI) = 6, we have
+
+IU = .U._-I
+
+(23)
+
+clearly the number of l's in U', denoted |U'j, will be just
+n(0, 1) of the original U. Then, finally,
+E*(U) = 1 - jU'|.
+(24)
+For examples, see Fig. 8.
+Fig. 8(a) is typical of a bit lying on the edge of an object.
+Fig. 8(b) shows a bit which if set will join two objects, or
+perhaps close off a hole. In Fig. 8(c), the center bit joins
+three branches, for example of a skeleton image. In Fig.
+8(d), E* = + 1, because setting the center bit creates a new
+object. In Fig. 8(e), setting the center bit removes a hole,
+so E*=+ 1.
+Resetting bits whose E* = 0 is the basic operation needed
+to skeletonize a, hexagonal image, since a skeleton by definition is the thinnest image having the same connectivity
+as the original. However, all such bits cannot be removed
+at once, because of the possibility of a nonlinear interaction.
+The lemma of Section I1-C says that if two bits A and B,
+each having E* 0, are reset, the total E* is guaranteed to be
+0 if A and B are disjoint. (Equation (8) is written in terms of
+the union of new images, so we can think of adding bits to
+the complement image.) Since the hexagonal lattice can be
+separated into three congruent regular disjoint sets, a correct skeletonizing procedure consists of groups of three
+steps. This is discussed in more detail by Golay [8, p. 734].
+Since P and A are locally summable just as E is, the sixbit neighborhood U is also associated with a differential
+area and differential perimeter, defined according to
+A*(U) = AA/AU = 1
+and
+
+P*(U)= AP/AU.
+
+P*=6-21Ul.
+
+(27)
+
+V. THE SQUARE LATTICE
+A. Bit Quads
+We have introduced bit cells, which are squares each
+having the value 0 or 1, and cell groups, which are squares
+centered on the corners of four bit cells. A bit quad is a
+2 x 2 array of bit cells. Clearly the values of the four bit cells
+in a quad must be known to count the fundamental quantities no, n1, and n2 in the corresponding cell group.
+There are 16 possible bit quads, and six distinct types
+considering rotational equivalence: Qi, 0< i <4, contains
+(i) l'S; QD, contains the types [°O] and [0s]. The notation
+n(Qi) or n(QD) refers to the number of the corresponding
+type in the image. It is not difficult to prove the following
+formulas involving image area A and perimeter P.
+
+4A = n(Q1) + 2n(Q2) + 2n(QD) + 3n(Q3) + 4n(Q4) (28)
+P = n(Qj) + n(Q2) + 2n(QD) + n(Q3)
+(29)
+P and n(Q2) are even integers.
+(30)
+B. Perimeter Length; Approximate Area
+An argument similar to that used with hexagons gives
+
+P = 2n[01] + 2nL;§
+
+(31)
+
+which is exactly equivalent to (29). This formula can err
+up to 41 percent if we are determining the length of originally
+smooth (uncellularized) perimeters. For such purposes, an
+approximation accurate to 8 percent can be obtained in
+which we assume a Q1 or Q3 bit cell represents a 450 "short(25) cut" taken by the original smooth contour. This approximate perimeter Pa is given by
+
+To find P*, we use (6) in the form
+AP = P(AI) - P(I n AI)
+(26)
+where I is the center hex cell. Then P(IrlAI) = 21 Uj, because
+
+Pa = n(Q2) + [n(Ql) + n(Q3)]/V2.
+
+(32)
+
+Similar reasoning yields an approximate area Aa:
+
+Authorized licensed use limited to: Technische Universitaet Muenchen. Downloaded on October 19,2025 at 12:03:15 UTC from IEEE Xplore. Restrictions apply.
+
+557
+
+GRAY: LOCAL PROPERTIES OF BINARY IMAGES
+
+4Aa = n(Q )/2 + n(Q2) + n(QD) + 7n(Q3)/2 + 4n(Q4). (33)
+
+(For images with low Euler number, (33) and (28) give
+almost identical results.)
+C. Euler Number
+The topology of the square lattice is obviously complicated by the QD quad, which can be treated in several ways:
+vertex-adjacent 1-cells in a QD can be considered connected;
+the 0-cells in a QD can be considered connected; or some
+assumption which is symmetrical with respect to 0 and 1
+can be made. We will show below that these and other
+answers are mathematically consistent.
+To derive the basic formula for E, we adopt a "triangulation" convention in which all l's areas are divided into unit
+squares by adding suitable vertices and line segments, just
+as in the hexagonal case. See Fig. 9. We now count no, n1,
+and n2, summing over the cell group squares. Allowing for
+the fact that a cell group square can contain only half of any
+unit line segment, and only one-quarter of any bit cell, we
+see that square 1 contains one vertex, two halves of line
+segments, and 1/4 of a subarea. Clearly, the contribution
+of a cell group depends only on its quad type, and in detail
+are as follows.
+Square Quad Type
+0
+
+1
+2
+
+3
+4
+5
+
+QO
+Q1
+Q2
+Q3
+Q4
+QD
+
+Ano
+
+An,
+
+0
+
+0
+
+1
+1
+1
+1
+
+3/2
+
+1
+
+1
+
+2
+2
+2
+
+An2
+
+A(no-n1 +n2)
+
+0
+
+0
+
+1/4
+1/2
+
+3/4
+1
+
+1/2
+
+Fig. 9. "Triangulation" of square lattice image.
+
+Z=2
+
+W=l
+H=1.5
+
+Z=I
+
+W=0
+
+H=.5
+
+Z=4
+W=0
+H=2
+
+Z=2
+
+W=0
+H=
+
+Fig. 10. Examples of three Euler numbers.
+
+1/4
+
+0
+
+-1/4
+0
+
+-1/2
+
+Summing over all cell groups gives counts over the entire
+image; thus,
+
+4Z A(no - n1 + n2) = n(Q1) - n(Q3)- 2n(QD).
+But summing A(no- n1 + n2) over the image gives the Euler
+number, denoted W:
+4W = n(Q1) - n(Q3)- 2n(QD).
+(34)
+In the above treatment, a diagonal connection such as
+is considered to be a full connection, since the two bit
+[U]
+cells meet (in one point). Hence the symbol W, standing for
+"ones-joined Euler number". Clearly there should be a
+formula which treats two diagonally adjacent l's to be disconnected. This is derived by imagining the two l's cells
+corners not touching, thus requiring two vertices; hence
+
+Fig. 11. Square lattice neighborhood nomenclature.
+
+of W and Z:
+4H = n(Q1) - n(Q3).
+
+(36)
+
+The H model of the plane considers a QD to be a halfconnection. See Fig. 10.
+
+D. Eight-Bit Neighborhoods and Euler Diferential
+A given bit cell is a member of four quads, the union of
+which is a 3 x 3 array of bits. Notation is shown in Fig. 11.
+Subscripts are taken modulo 8. The center cell U is not considered part of the eight-bit neighborhood U. (There are
+51 distinct types of neighborhoods, allowing for rotational
+and reflectional equivalence.) Since A, P, H, W, and Z are
+all locally countable, a given eight-bit neighborhood is
+for a QD'
+associated with the differentials A*(U), -, Z*(U), defined
+exactly as in Section IV-C. To find a formula for P*(U), we
+A(no-n, + n2) =+1/2.
+follow
+the argument used for (27), noting that only the neighThis Euler number will be denoted Z ("zeros joined"), and borhood
+of odd-numbered cells, denoted Ud = { U1, U3, U5,
+is given by
+contributes
+to P(IrnAI). [See (27).] In this case P(AI)
+U7},
+so
+we
+4Z = n(Q1) - n(Q3) + 2nQD)have
+=4,
+(35)
+
+A "half-joined" Euler number can be defined as the average
+
+p* = 4 -
+
+2|Udl.
+
+(37)
+
+Authorized licensed use limited to: Technische Universitaet Muenchen. Downloaded on October 19,2025 at 12:03:15 UTC from IEEE Xplore. Restrictions apply.
+
+ss8
+
+IEEE TRANSACTIONS ON COMPUTERS, MAY 1971
+
+To find W*, Z*, and H*, we calculate the changes in no,
+n1, and n2 over the neighborhood resulting from changing U
+from 0 to 1. We again assume complete subdivision of 1's
+areas into points, lines, and unit subareas. Since setting U
+always adds a subarea, obviously An2 =1. Next, for each
+zero bit cell edge-adjacent to U, a unit line is added. Finally,
+a vertex will be added at a particular corner of U only if
+there is no vertex there when U = 0. This can only be if the
+three adjacent bits in U are all 0. Therefore the following
+lemma holds.
+Lemma: W* is equal to the number of {0, 0, 0} corners
+minus the number of zeros among the odd neighbors, plus
+one.
+Considering the possible values of a given corner bit and
+its two neighbors, such as the corner {U3, U4, U5}, only
+the configurations {0, 1, 0}, {1, 0, 0}, and {1, 1, 0} contribute to W*. Denoting the number of such three-bit combinations taken clockwise, as C246 (range 0 to 4), we have
+
+W*(U)
+
+=
+
+1 - C246.
+
+Au=I
+
+H,=I H*=-5
+W,=l WI=0
+
+C,7=l HO=1.5
+
+C246=1 W0=1
+
+C,35=2 Z0=2
+
+C,,=I
+
+HS=2
+
+C135
+
+7-2
+
+i,=I
+
+AU=I
+
+H,=1.5 H8=-5
+
+WI=
+
+024=2 W0=2
+=
+
+Z*=-l
+
+-I
+
+Z1=2 Z= 0
+
+AU=I
+
+H,= 2
+
+C07=0 Ho=3
+
+0248=3 W9=3
+
+W,=l
+
+H1-
+
+0-2
+
+Z,=3 Z=0
+C,5=l ZO=3
+Fig. 12. Examples of square lattice Euler differentials.
+
+(38)
+
+same disjoint sets for simultaneous removal.4 (It happens
+that it is almost always satisfactory, for obtaining-the weak
+skeleton, to allow simultaneous removal over half the lattice, rather than one-quarter. This makes weak skeletons
+easier to extract.)
+Another approach to skeletonizing is sequential, in which
+a cell whose E* = 0 is reset, and then its new value of 0 is
+used in computing the neighborhood of the next cell. This
+will always yield a topologically valid skeleton, but one
+whose metric properties, for example line position with respect to the original areas, may be undesirable.
+The above discussion of skeletonizing omits certain postprocessing cleanup steps which are desirable to smooth the
+skeleton. Also not discussed is stabilization of end points,
+which is simple, but is best described in the context of the
+binary image processor hardware. This application and
+others will be covered in a future paper.
+F. Critical Point Euler Number
+The Euler numbers W, Z, and H were all symmetrical
+-|IU'|/2.
+functions of the quads, that is, the directions right and left
+are treated identically, as are up and down, and as are
+the two types of QD. Critical points give simpler formulas
+which, however, are direction dependent. If 0 is chosen to
+E. Skeleton Extraction
+roo,
+point
+"southeast," clearly an Xo can only arise from [o°],
+As an example of the above algorithms, consider having
+an arbitrary binary image on the square lattice, perhaps and a Vo must be [a]. Then (11) gives
+consisting of line-like elements. From this image we can
+E
+n[1]
+(44)
+generate a "weakly connected" skeleton; that is a unitwidth line image, topologically equivalent to the original
+image, in which a QD is a valid join in the skeleton. This can If we assume that QD's are rare, a bit can be dropped from
+be done by resetting each U whose W*(U) = 0. As explained each [ because its value is implied, giving
+for the hexagonal lattice, only disjoint points may be removed in any one step. The square lattice must be con4 The above argument carries over directly to the triangular lattice.
+sidered as the union of four (or more) congruent regular The formula for W*(U) is: the number of {O, 0, 0, 0, 0} corners, minus the
+number of zeros among the edge-adjacent cells, plus one. To skeletonize,
+disjoint sets. Therefore the skeletonizing procedure con- remove
+cells whose W* = this must be done over disjoint sets of cells.
+sists of sets of four substeps. A "strong" skeleton may be The triangular lattice is the0; union of six congruent regular
+sets, making
+generated by removing points whose Z*(U)=0, using the skeletonizing on this lattice relatively slow.
+
+A corresponding formula can be derived for Z*(U) by considering image complements. We get
+Z*(U) = 1 - C135
+(39)
+where C135 is the number of corner-centered bit-triplets
+having any of the patterns (taken clockwise) {0, 0, 1},
+{0, 1, 1}, or {1, 0, 1}.
+Finally, defining C07 as the number of "homogeneous"
+corners, we have
+H*(U) = C07/2 - 1.
+(40)
+See Fig. 12.
+It is then possible to define a simple Boolean transformation of U into U', such that the populations of U' and its
+subsets give
+(41)
+W*(U) = 1 - lUe|
+(42)
+Z*(U) = 1 - |Ud'I
+(43)
+H*(U) = 1
+The transformations and detailed proofs of (38H(40) are
+given in [10].
+
+=
+
+-
+
+n[
+
+]
+
+Authorized licensed use limited to: Technische Universitaet Muenchen. Downloaded on October 19,2025 at 12:03:15 UTC from IEEE Xplore. Restrictions apply.
+
+559
+
+GRAY: LOCAL PROPERTIES OF BINARY IMAGES
+BOOLEAN
+FUNCTIO
+
+WEIGHTS
+
+Ici 1c
+
+Fig. 13. Typical LPC. Image dimension N=2. LPC diameter D=4.
+LPC degree G = 5. LPC order R = 3 (because of B3, B5). LPC dimension M=2 (because of B3).
+
+Boolean functions F1, F2, * * *, FG to be simultaneously com(45) puted, all affecting the same counter. See Fig. 13.
+Associated with each function Fg is a weight Wg. The
+serially takes every possible position in the image,
+window
+and three equivalent expressions. There are also eight other
+for
+example
+by scanning in a raster fashion. When the scan
+expressions for E, easily derived from (44), of the form
+is over, the counter contains a "locally countable property"
+of the image.
+(46)
+E
+]
+n -0 n
+Definitions (for an N-dimensional image) are as follows.
+E = n{] - n
+
+]
+
+=
+
+The three formulas above will treat one type of QD as a
+ones-join, and the other as a zeros-join. This direction dependence can be "averaged out":
+2H = n1 + n
+
+- n
+
+-n
+
+(47)
+
+We have presented four valid ways of treating the diagonal connection QD. In addition, one can consider [0°] to be
+ones-joined on even-numbered rows and zeros-joined on
+odd-numbered rows; [lo] is treated exactly opposite. This
+would obtain naturally if we moved the even rows 1/2 cell
+to the left, which figure resembles the hexagonal lattice.
+Since all these treatments are valid, QD should certainly be
+regarded as a complication of the square lattice, but not as
+a paradox or ambiguity. It is not a unique complication, but
+a result of the fact that the neighborhood complexity of the
+(p, q) tessellation increases with q.
+For a related but quite different treatment of topology
+on the square lattice, refer to Rosenfeld [13].
+
+Definition
+
+Symbol
+
+Name
+
+D
+
+Diameter5
+
+Max (I, J)
+
+G
+
+Degree
+
+Number of Fe's feeding the counter6
+
+R
+
+Order'
+
+Maximum over g of the number of cells in the
+window feeding any Fg
+
+M
+
+Dimension
+
+Maximum over g of the number of orthogonal
+axes "spanned" by the sample points of any one
+function Fg
+
+Example 1: An LPC for measuring the area A (number of
+l's) of a two-dimensional binary image. This obviously requires a 1 x 1 window, hence D = 1 and M = 0. We need one
+Boolean function feeding the counter, namely F1 = U 1.
+Hence G =1 and R =1. This computation can be represented by A = n [1].
+Example 2: An LPC for measuring the perimeter length
+P of a two-dimensional binary image. This LPC calculates
+P=2n[01]+2n[°]. This LPC has diameter D=2, degree
+G = 2, order R = 2, dimension M = 1.
+The local property counter is analogous to a perceptron
+each of whose second-level elements computes a weighted
+sum of all its first-level outputs, and compares the sum to a
+threshold, producing a final decision of 1 or 0. An LPC is
+primarily intended to measure or count properties, not for
+deciding or recognizing, so the threshold step is omitted.
+Having defined the LPC, we now define the localness of
+a measurement on a binary lattice as the ordered set of
+integers {D, G, R, M}, which are the minimum diameter,
+degree, order, and dimension on LPC needs to determine
+the measurement.
+
+VI. THE LOCAL PROPERTY COUNTER
+A. Definitions
+This section discusses image measurements which can be
+made by a particular type of perceptron-like device, called
+the local property counter (LPC), operating on discrete
+binary images in one and two (and later, three) dimensions.
+Rather than describing the LPC in terms of standard perceptron notation, we choose a serial analog, as follows. (Assume a two-dimensional image for now.)
+A binary image is defined on the two-dimensional finite
+square lattice in the usual way, and is assumed to be surrounded by zeros. A rectangular window of IJ cells, Uij,
+These terms were chosen to correspond with typical restrictions
+i= 1, * * *, I, j= 1, * * *, J, is simultaneously sampled by a
+on the first-level elements in a parallel perceptron [1].
+digital computing device, which calculates some fixed placed
+6 The split into (G) functions is somewhat arbitrary, but the Fg's have
+Boolean function F on the IJ bits. If the Boolean function is been chosen so that G is an indicator of the complexity of the counting
+true, a counter is incremented. We actually allow several logic.
+
+Authorized licensed use limited to: Technische Universitaet Muenchen. Downloaded on October 19,2025 at 12:03:15 UTC from IEEE Xplore. Restrictions apply.
+
+560
+
+IEEE TRANSACTIONS ON COMPUTERS, MAY 1971
+
+B. Summary of Local Properties
+LPC Characteristics7
+Image
+Dimension
+
+Property
+
+See
+Equation
+
+Symbol
+
+Diameter
+D
+
+Degree
+G
+
+Order
+R
+
+Dimension
+M
+
+1
+
+Length (total l's)
+
+L
+
+1
+
+1
+
+1
+
+0
+
+2
+
+Area
+
+A
+
+1
+
+1
+
+1
+
+0
+
+2
+
+Approximate area (square)
+
+Aa
+
+(33)
+
+2
+
+5
+
+4
+
+2
+
+2
+
+Perimeter length
+hex
+square
+
+P
+
+(19)
+(31)
+
+2
+2
+
+3
+2
+
+2
+2
+
+1
+1
+
+2
+
+Approximate perimeter
+
+P.
+
+(21)
+
+2
+2
+
+3
+3
+
+2
+4
+
+1
+2
+
+2
+
+1
+
+2
+
+1
+
+hex
+square
+
+(32)
+
+1
+
+Eulernumber
+
+E
+
+2
+
+Euler number
+critical point
+
+E
+
+(17)
+(46)
+
+2
+2
+
+2
+2
+
+3
+3
+
+2
+2
+
+2
+
+Euler number, direction independent
+
+W
+Z
+H
+H
+
+(34)
+
+2
+2
+2
+2
+
+3
+3
+2
+4
+
+4
+4
+4
+3
+
+2
+2
+2
+2
+
+(35)
+(36)
+(47)
+
+further, certain diameter-3 cell-finding operations could be
+done by a series of diameter-2 operations.
+We also note that certain properties change order and degree with the lattice type, but keep the same diameter, for
+example P and P, Diameter is also constant with image
+dimension for certain measures, such as E. This strongly
+suggests that diameter D is the most fundamental localness
+parameter.
+Lastly, it is interesting that in two dimensions, H may be a
+(48) slightly more fundamental measure than Z or W, since it
+can be obtained by either a smaller order or a smaller degree
+expression.
+
+C. Remarks on Localness
+The table shows that on an N-dimensional lattice, Euler
+number E is a measurement of order N + 1 and diameter 2,
+at least for N < 3. (It has been shown that E is of order 4 on
+the cubic lattice [4, p. 54].) The quantity N+ 1 is what one
+might expect, for N +1 points are required to define N
+orthogonal directions. It is interesting to compare this with
+a previous result given for two dimensions [1, p. 87]:
+E = n[l] - n[11] - n[] + n[1l
+
+(This expression can easily be derived from the E =no
+-n1 + n2 argument.) Their expression easily generalizes to
+three (and more) dimensions. There would be one "point
+term," n [1], three linear terms, three area terms, and a new
+volume term, namely - n [2 x 2 x 2 cubes of l's]. Hence, E
+in N dimensions is clearly of order R < 2N with D =2. I do
+not know of a proof that E is of order exactly N + 1.
+All local properties considered in this paper are of diameter 2 or less. Since these properties and the derived characterizations (width, thickness, etc.) are fairly powerful
+measurements, and since no useful local properties of higher
+diameter are known, it is suggested that diameter-2 neighborhoods are sufficient for powerful numerical image measurements. In Sections IV-C and V-D, we found that diameter-3 neighborhoods are necessary for finding certain cells
+in the image (e.g., those having a particular Euler differential, in terms of U'|, or those having a certain neighborhood
+population IU|). These contrasting principles are not put
+forward as being absolute; for example, it is clear that
+larger diameter measurements can yield a more accurate expression for Pa (assuming originally smooth boundaries);
+
+VII. THE BINARY IMAGE PROCESSOR (BIP)
+
+We have shown that some important image measurements are locally countable during a sequential pass
+through the picture. Having discovered these properties,
+we were unwilling to discard them, so we considered the
+feasibility of an entirely serial binary image processor, since
+1's-counting is rather unnatural for a parallel machine. For
+the applications of greatest importance, including commercially competitive character recognition, it appeared
+that a 20 megabit rate was entirely suitable. Since rates
+higher than this can be achieved even for fairly complex
+processes with modern components, design of a serial BIP
+began in earnest. See Fig. 14.
+An important function of the BIP is cross correlation;
+hence it has two image arguments, denoted unknown (U)
+and mask (M), both taken from core memory. It simultane7 All numbers listed are upper bounds, since simpler tneasurements
+might exist for any of the properties. In most cases, it is not likely that
+such simplifications exist.
+
+Authorized licensed use limited to: Technische Universitaet Muenchen. Downloaded on October 19,2025 at 12:03:15 UTC from IEEE Xplore. Restrictions apply.
+
+561
+
+GRAY: LOCAL PROPERTIES OF BINARY IMAGES
+SYSTEM
+
+CORE
+MEMORY
+t
+
+0
+
+EATJA_,
+
+M DATA_
+
+SERIALIZER
+
+L_ RESULT IMAGE
+
+PROPERTY
+COUNTERS
+CORRELATION
+SCRD COUNTERS
+CONTROL
+C_ONTROL _
+PARAMETER
+DATA
+REGISTERS
+
+MASK
+IMAGE
+AREA
+RESULT
+IMAGE _
+AREA
+e
+
+4j0acr
+
+2 c'
+
+mre
+
+Zo.
+
+MEMORY
+INTERFACE
+
+BIP
+COMMAND
+a
+EXECUTION
+COMMAN S _
+CONTROL LOGIC
+
+COMPUTER~~
+~~~
+PROGRAM| °PT
+DAAAREAv
+DATA
+
+IMAGE
+
+r
+R DATA
+AND
+eTt1
+_PROCESSOR
+
+UNKNOWN
+IMAGE
+AREA
+
+COUNT a
+CONTROL
+AREA
+
+_
+
+AR/ A
+
+P OPUE
+(D-O
+
+3
+
+STANDARD
+
+~PERIPHERALS
+
+,,,
+,,,,.
+
+Fig. 14. Binary image processor and its system environment.
+
+ously produces cross correlations at nine relative positions
+of M with respect to U (corresponding to a 3 x 3 neighborhood of offsets). Simultaneously, it produces a result image
+R, which is stored. As it is generated, R feeds a set of local
+property counters, exactly in the sense of Section VI, which
+are sufficient for all presently known interesting measurements in two dimensions.
+Each bit in the R image is a programmable Boolean
+-function Rij= R(Uij, Mij, Pij), where Mij is the ijth bit in the
+mask image, Uij is the corresponding.bit of the unknown U,
+and Pij is-a modified majority-rule function of the neighborhood of Uij, namely Uij. To make the P function general, we
+
+the line ends, or both, of a skeleton. Counting and locating
+these cells is a powerful form of feature extraction.
+The BIP is an autonomous processor, in that it executes
+its own program once started by the system's generalpurpose computer. It can thus sequence itself through a
+long series of image processes, if desired. For example, it
+could correlate one unknown against all masks in a typeface
+stored in core, placing all scores back into memory for
+further processing by the GP computer, or it could smooth
+an unknown image, using standard neighborhood majority
+operations. Ifthe local properties ofR, such as area, average
+line width, and Euler number, as tested by the GP computer,
+indicate that R is of suitable quality for correlation, the
+BIP would then change its control bits to start multiple correlation passes. If R still seems defective, more enhancement passes are performed.
+Of course, the BIP was not built simply because E, P, and
+A are locally countable properties. Its design arose out of
+lengthy experience with other uses ofserial image and neighborhood processing. A small BIP was built and used
+successfully for character recognition in 1968, before we
+had investigated binary image topology and local property
+counting. The present, large BIP (about 1600 integrated
+circuits) has been operational since December 1970.
+
+ACKNOWLEDGMENT
+The author wishes to thank Prof. E. Fredkin for suggesting the development of a programmable high-speed image
+processing computer, Prof. R. Bott for introducing the
+critical point theory, and J. Munson, L. Hawkinson, and
+M. Levin for contributing important ideas in developing
+the
+BIP.
+introduce an eight-bit selection register S = {S0,"-, SS7},
+REFERENCES
+which is ANDed with U. The population of the selected sub[1 M. Minsky and S. Papert, Perceptrons. Cambridge, Mass.: M.I.T.
+set of U is denoted U * SI. We now generate the predicate
+Press, 1968.
+P depending on whether the population number, 0-8, corre- [2] A.
+D. Aleksandrov, A. N. Kolomogorov, and M. A. Lavrent'ev,
+Eds., Mathematics: Its Content, Methods, and Meaning, 2nd ed.,
+sponds to a one in a nine-bit "count" register C= {C0, *
+vol. III (S. M. Gould, transl.). Cambridge, Mass.: M.I.T. Press,
+C8}. This can be denoted
+1969, p. 205.
+
+Cusl.
+
+(49)
+(The subscripts i, j of P and U are omitted for clarity; it is
+understood that (49) is computed for all i, j.) Thus, the BIP
+can fatten or thin U in the usual well-known ways [12],
+using the ordinary neighborhood U. As soon as R is completely generated and stored, its local property counts are
+available for the system's central computer, which is a
+PDP-10.
+The above neighborhood processing structure was the
+motivation for the neighborhood transformation U-- U'
+used in the Euler differential formulas (24), (41H43). In the
+BIPs "Euler mode," U' is used instead of U to compute P,
+and hence to compute the R image. The selection register
+can choose the even neighborhood for generating images
+which are a function of W-*, or the odd neighborhood for
+Z*-dependent images, or the entire neighborhood for
+functions of H*.
+Using the U' operation, the BIP can skeletonize; it can
+further generate a picture consisting of all the nodes, or all
+P =
+
+[3] R. Bott, Lectures on Morse Theory. Bonn: Bonn Univ. Math.
+
+Inst., 1958.
+[4] S. B. Gray, "Local properties of binary images in two and three
+dimensions," Information International, Inc., Los Angeles, Calif.,
+Internal Rep., Feb. 4, 1970.
+[5] M. R. Bartz, "The IBM 1975 optical page reader, part 2," IBM J.
+Res. Develop., Sept. 1968.
+[6] H. S. M. Coxeter, Introduction to Geometry. New York: Wiley,
+1961, p. 62.
+[7] C. J. Hilditch, "Linear skeletons from square cupboards," in Machine Intelligence 4, Meltzer and D. Michie, Eds. New York:
+American Elsevier, 1969.
+[8] M. J. E. Golay, "Hexagonal parallel pattern transformations,"
+IEEE Trans. Computers, vol. C-18, Aug. 1969, pp. 733-740.
+[9] A. Rosenfeld and J. Pfaltz, "Sequential operations in picture processing," J. ACM, vol. 13, Oct. 1966, p. 475.
+[10] S. B. Gray, "Local properties of binary images in two dimensions,"
+Information International, Inc., Los Angeles, Calif., Internal Rep.,
+June 8, 1970.
+[11] F. Attneave and M. D. Arnoult, "The quantitative study of shape and
+pattern recognition," in Pattern Recognition, L. Uhr, Ed. New
+York: Wiley, 1966, p. 139.
+[12] S. H. Unger, "Pattern detection and recognition," Proc. IRE, vol.
+47, Oct. 1959, pp. 1737-1752.
+[13] A. Rosenfeld, "Connectivity in digital pictures," J. ACM, vol. 17,
+Jan. 1970.
+
+Authorized licensed use limited to: Technische Universitaet Muenchen. Downloaded on October 19,2025 at 12:03:15 UTC from IEEE Xplore. Restrictions apply.
+
+
